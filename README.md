@@ -16,7 +16,9 @@ composer update
 
 ## 部署
 
-1.部署到Nginx时，必须配置伪静态:
+1.在项目部署前请为PHP安装Imagick图像处理库(所有接口都用这个),推荐3.4.3版本
+
+2.部署到Nginx时，必须配置伪静态:
 ```
 location / {
 	if (!-e $request_filename){
@@ -25,9 +27,9 @@ location / {
 }
 ```
 
-2.运行目录指向public文件夹
+3.运行目录指向public文件夹
 
-3.宝塔需要关闭防跨站攻击(open_basedir)
+4.宝塔需要关闭防跨站攻击(open_basedir)
 
 ## 访问方法
 
