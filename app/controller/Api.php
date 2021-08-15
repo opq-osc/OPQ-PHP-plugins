@@ -8,6 +8,7 @@ use ImagickDraw;
 
 class Api extends BaseController
 {
+    //爬
     public function pa_pic()
     {
         $qq = input('qq',0);
@@ -27,6 +28,7 @@ class Api extends BaseController
         ob_end_clean();
         echo $backgroud->getImageBlob();
     }
+    //FBI指人
     public function finger()
     {
         $qq = input('qq',0);
@@ -45,6 +47,7 @@ class Api extends BaseController
         ob_end_clean();
         echo $canvas->getImageBlob();
     }
+    //撕头像
     public function slash()
     {
         $qq = input('qq',0);
@@ -97,6 +100,7 @@ class Api extends BaseController
         ob_end_clean();
         echo $background->getImageBlob();
     }
+    //旋转丢
     public function throw_pic()
     {
         $qq = input('qq',0);
@@ -117,6 +121,7 @@ class Api extends BaseController
         ob_end_clean();
         echo $animation->getImagesBlob();
     }
+    //rua(摸)
     public function petpet(){
         $qq = input('qq',0);
         $head=new Imagick("https://q1.qlogo.cn/g?b=qq&nk=$qq&s=100");
@@ -144,6 +149,7 @@ class Api extends BaseController
         ob_end_clean();
         echo $animation->getImagesBlob();
     }
+    //亲
     public function kiss(){
         $qq1 = input('qq1',0);
         $qq2 = input('qq2',0);
@@ -173,6 +179,7 @@ class Api extends BaseController
         ob_end_clean();
         echo $animation->getImagesBlob();
     }
+    //p站logo
     public function phlogo()
     {
         $text1 = input('text1');
