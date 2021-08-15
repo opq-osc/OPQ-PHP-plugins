@@ -208,7 +208,45 @@ class Api extends BaseController
         ob_end_clean();
         echo $background->getImageBlob();
     }
-    public function textttf(&$imagick, $text, $x = 0, $y = 0, $style = [],$align='center')
+    //今日运势
+    function fortune()
+    {
+        $img = new Imagick(WEB_ROOT . 'fortune/image/frame_' . (string)rand(1, 66) . '.jpg');
+        $style1['font_size'] = 45;
+        $style1['fill_color'] = '#F5F5F5';
+        $style1['font'] = WEB_ROOT . "fortune/font/Mamelon.otf";
+        $style2['font_size'] = 25;
+        $style2['font'] = WEB_ROOT . "fortune/font/sakura.ttf";
+        $style2['fill_color'] = '#323232';
+        $file1 = json_decode(file_get_contents(WEB_ROOT . "fortune/fortune/goodLuck.json"), true);
+        $file2 = json_decode(file_get_contents(WEB_ROOT . "fortune/fortune/copywriting.json"), true);
+        $lucky = $file2['copywriting'][rand(0, 178)];
+        $content = $lucky['content'];
+        $text = '';
+        foreach ($file1['types_of'] as $v) {
+            if ($lucky['good-luck'] == $v['good-luck']) {
+                $title = $v['name'];
+            }
+        }
+        for ($i = 0; $i < mb_strlen($content); $i++) {
+            $text .= mb_substr($content, $i, 1) . PHP_EOL;
+        }
+        header('Content-type:image/png');
+        $this->textttf($img, $title, 140, 120, 0, $style1);
+        if (mb_strlen($text) <= 16) {
+            $this->textttf($img, $text, 140, 190, 0, $style2);
+        } else if (mb_strlen($text) <= 32) {
+            $this->textttf($img, mb_substr($text, 0, 16), 110, 190, 0, $style2);
+            $this->textttf($img, mb_substr($text, 16), 170, 190, 0, $style2);
+        } else {
+            $this->textttf($img, mb_substr($text, 0, 16), 100, 190, 0, $style2);
+            $this->textttf($img, mb_substr($text, 16, 16), 140, 190, 0, $style2);
+            $this->textttf($img, mb_substr($text, 32), 180, 190, 0, $style2);
+        }
+        ob_end_clean();
+        echo $img->getImageBlob();
+    }
+        public function textttf(&$imagick, $text, $x = 0, $y = 0, $style = [],$align='center')
     {
         $draw = new ImagickDraw ();
         if (isset ($style ['font']))
