@@ -31,11 +31,11 @@ location / {
 
 ## 访问方法
 
-所有API路由为http(s)://你的域名/api/对应的插件方法名,访问方式为GET
+注意这不是SDK！但此项目部署后可为其他框架或应用提供有效API接口，返回类型均为二级制流图像
+
+路由结构为http(s)://你的域名/api/插件方法名,访问方式为GET,例如爬接口url为:http(s)://你的域名/api/pa_pic?qq=目标qq号
 
 目前使用的是TP6的单应用模式,所有插件封装在app/controller/Api.php下,一个成员方法对应一个接口(插件),方便懒人食用
-
-例如爬接口url为:http(s)://你的域名/api/pa_pic?qq=目标qq号
 
 ## 插件作者
 
