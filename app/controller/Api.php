@@ -5,10 +5,21 @@ use app\BaseController;
 use Imagick;
 use ImagickPixel;
 use ImagickDraw;
-
+use think\facade\Db;
+use hg\apidoc\annotation as Apidoc;
+/**
+ * @Apidoc\Title("世外天堂图像接口")
+ */
 class Api extends BaseController
 {
-    //爬
+    protected $table = 'qq_qiandao';
+    /**
+     * @Apidoc\Title("爬接口")
+     * @Apidoc\Url("/api/pa_pic")
+     * @Apidoc\Method("GET")
+     * @Apidoc\Param("qq", type="string",require=true, desc="QQ号" )
+     * @Apidoc\Returned("image", type="binary", desc="图像")
+     */
     public function pa_pic()
     {
         $qq = input('qq',0);
@@ -28,7 +39,13 @@ class Api extends BaseController
         ob_end_clean();
         echo $backgroud->getImageBlob();
     }
-    //FBI指人
+    /**
+     * @Apidoc\Title("指人接口")
+     * @Apidoc\Url("/api/finger")
+     * @Apidoc\Method("GET")
+     * @Apidoc\Param("qq", type="string",require=true, desc="QQ号" )
+     * @Apidoc\Returned("image", type="binary", desc="图像")
+     */
     public function finger()
     {
         $qq = input('qq',0);
@@ -47,7 +64,13 @@ class Api extends BaseController
         ob_end_clean();
         echo $canvas->getImageBlob();
     }
-    //撕头像
+    /**
+     * @Apidoc\Title("撕接口")
+     * @Apidoc\Url("/api/slash")
+     * @Apidoc\Method("GET")
+     * @Apidoc\Param("qq", type="string",require=true, desc="QQ号" )
+     * @Apidoc\Returned("image", type="binary", desc="图像")
+     */
     public function slash()
     {
         $qq = input('qq',0);
@@ -100,7 +123,13 @@ class Api extends BaseController
         ob_end_clean();
         echo $background->getImageBlob();
     }
-    //旋转丢
+    /**
+     * @Apidoc\Title("旋转丢接口")
+     * @Apidoc\Url("/api/throw_pic")
+     * @Apidoc\Method("GET")
+     * @Apidoc\Param("qq", type="string",require=true, desc="QQ号" )
+     * @Apidoc\Returned("image", type="binary", desc="图像")
+     */
     public function throw_pic()
     {
         $qq = input('qq',0);
@@ -121,7 +150,13 @@ class Api extends BaseController
         ob_end_clean();
         echo $animation->getImagesBlob();
     }
-    //rua(摸)
+    /**
+     * @Apidoc\Title("rua接口")
+     * @Apidoc\Url("/api/petpet")
+     * @Apidoc\Method("GET")
+     * @Apidoc\Param("qq", type="string",require=true, desc="QQ号" )
+     * @Apidoc\Returned("image", type="binary", desc="图像")
+     */
     public function petpet(){
         $qq = input('qq',0);
         $head=new Imagick("https://q1.qlogo.cn/g?b=qq&nk=$qq&s=100");
@@ -149,7 +184,14 @@ class Api extends BaseController
         ob_end_clean();
         echo $animation->getImagesBlob();
     }
-    //亲
+    /**
+     * @Apidoc\Title("亲接口")
+     * @Apidoc\Url("/api/kiss")
+     * @Apidoc\Method("GET")
+     * @Apidoc\Param("qq1", type="string",require=true, desc="QQ号1" )
+     * @Apidoc\Param("qq2", type="string",require=true, desc="QQ号2" )
+     * @Apidoc\Returned("image", type="binary", desc="图像")
+     */
     public function kiss(){
         $qq1 = input('qq1',0);
         $qq2 = input('qq2',0);
@@ -179,7 +221,14 @@ class Api extends BaseController
         ob_end_clean();
         echo $animation->getImagesBlob();
     }
-    //p站logo
+    /**
+     * @Apidoc\Title("p站logo接口")
+     * @Apidoc\Url("/api/phlogo")
+     * @Apidoc\Method("GET")
+     * @Apidoc\Param("text1", type="string",require=true, desc="文本1" )
+     * @Apidoc\Param("text2", type="string",require=true, desc="文本2" )
+     * @Apidoc\Returned("image", type="binary", desc="图像")
+     */
     public function phlogo()
     {
         $text1 = input('text1');
@@ -208,7 +257,12 @@ class Api extends BaseController
         ob_end_clean();
         echo $background->getImageBlob();
     }
-    //今日运势
+    /**
+     * @Apidoc\Title("运势接口")
+     * @Apidoc\Url("/api/fortune")
+     * @Apidoc\Method("GET")
+     * @Apidoc\Returned("image", type="binary", desc="图像")
+     */
     function fortune()
     {
         $img = new Imagick(WEB_ROOT . 'fortune/image/frame_' . (string)rand(1, 66) . '.jpg');
@@ -232,21 +286,122 @@ class Api extends BaseController
             $text .= mb_substr($content, $i, 1) . PHP_EOL;
         }
         header('Content-type:image/png');
-        $this->textttf($img, $title, 140, 120, 0, $style1);
+        $this->textttf($img, $title, 140, 120,$style1);
         if (mb_strlen($text) <= 16) {
-            $this->textttf($img, $text, 140, 190, 0, $style2);
+            $this->textttf($img, $text, 140, 190,$style2);
         } else if (mb_strlen($text) <= 32) {
-            $this->textttf($img, mb_substr($text, 0, 16), 110, 190, 0, $style2);
-            $this->textttf($img, mb_substr($text, 16), 170, 190, 0, $style2);
+            $this->textttf($img, mb_substr($text, 0, 16), 110, 190, $style2);
+            $this->textttf($img, mb_substr($text, 16), 170, 190, $style2);
         } else {
-            $this->textttf($img, mb_substr($text, 0, 16), 100, 190, 0, $style2);
-            $this->textttf($img, mb_substr($text, 16, 16), 140, 190, 0, $style2);
-            $this->textttf($img, mb_substr($text, 32), 180, 190, 0, $style2);
+            $this->textttf($img, mb_substr($text, 0, 16), 100, 190,$style2);
+            $this->textttf($img, mb_substr($text, 16, 16), 140, 190, $style2);
+            $this->textttf($img, mb_substr($text, 32), 180, 190,$style2);
         }
         ob_end_clean();
         echo $img->getImageBlob();
     }
-        public function textttf(&$imagick, $text, $x = 0, $y = 0, $style = [],$align='center')
+    /**
+     * @Apidoc\Title("签到接口")
+     * @Apidoc\Url("/api/qiandao")
+     * @Apidoc\Method("GET")
+     * @Apidoc\Param("qq", type="string",require=true, desc="QQ号" )
+     * @Apidoc\Param("name", type="string",require=true, desc="昵称" )
+     * @Apidoc\Returned("image", type="binary", desc="图像")
+     */
+    public function qiandao()
+    {
+        $qq = input('qq');
+        $name = input('name');
+        $url = "https://q1.qlogo.cn/g?b=qq&nk=$qq&s=640";
+        $canvas = new Imagick($url);
+        $format = strtolower($canvas->getImageFormat());
+        $width=$canvas->getImageWidth();
+        $height=$canvas->getImageHeight();
+        $rectangle_height=ceil($height*0.12);
+        $top=ceil($height-2*$rectangle_height-$height*0.08);
+        $margin_top=ceil($rectangle_height*0.45);
+        $style['font_size'] = ceil($height*0.04);
+        $style['fill_color'] = '#FFFFFF';
+        $style['font'] = WEB_ROOT . "qiandao/REEJI-HonghuangLiGB-SemiBold.ttf";
+        $style2['font_size'] = ceil($height*0.03);
+        $style2['fill_color'] = '#FFFFFF';
+        $style2['font'] = WEB_ROOT . "qiandao/REEJI-HonghuangLiGB-SemiBold.ttf";
+        header('Content-type: ' . $format);
+        $data=Db::name($this->table)->where('qq', $qq)->find();
+        $gmp = rand(1, 200);
+        if (!$data) {
+            $success = 1;
+            $continus = 1;
+            Db::name($this->table)->insert(array(
+                'qq' => $qq,
+                'name' => $name,
+                'continus' => 1,
+                'msuccess' => 1,
+                'success' => 1,
+                'gmp' => $gmp,
+                'time' => date('Y-m-d H:i:s')
+            ));
+        }
+        else {
+            if (date('z', time()) == date('z', strtotime($data['time']))) {
+                $draw=new ImagickDraw();
+                $draw->setFillOpacity(0.3);
+                $draw->roundRectangle($width*0.05,$top,$width-$width*0.05,$top+2*$rectangle_height,30,30);
+                if ($format == 'gif') {
+                    foreach ($canvas as $frame) {
+                        $frame->drawImage($draw);
+                    }
+                }
+                else{
+                    $canvas->drawImage($draw);
+                }
+                $this->textttf($canvas,$name,$width/2,$top+1.5*$margin_top,$style);
+                $this->textttf($canvas,'签到失败，重复签到',$width/2,$top+3*$margin_top,$style);
+                header("Content-Type: image/".$format);
+                ob_end_clean();
+                echo $canvas->getImagesBlob();
+                return false;
+            }
+            $success = $data['success'] + 1;
+            $difference = date('z', time()) - date('z', strtotime($data['time']));
+            $continus = ($difference == 1 || $difference == -365) ? ($data['continus'] + 1) : 1;//考虑到跨年
+            $msuccess = date('F', time()) == date('F', strtotime($data['time'])) ? ($data['msuccess'] + 1) : 1;
+            Db::name($this->table)->where('qq', $qq)->update(array(
+                'name' => $name,
+                'continus' => $continus,
+                'msuccess' => $msuccess,
+                'success' => $success,
+                'gmp' => $gmp + $data['gmp'],
+                'time' => date('Y-m-d H:i:s')
+            ));
+        }
+        $day_arr = Db::query("SELECT qq FROM $this->table WHERE DATEDIFF(time,NOW())=0 order by time");
+        foreach ($day_arr as $k=>$v){
+            if($v['qq']==$qq){
+                $day_order=$k+1;
+            }
+        }
+        $draw=new ImagickDraw();
+        $draw->setFillOpacity(0.3);
+        $draw->roundRectangle($width*0.05,$top,$width-$width*0.05,$top+2*$rectangle_height,30,30);
+        if ($format == 'gif') {
+            foreach ($canvas as $frame) {
+                $frame->drawImage($draw);
+            }
+        }
+        else{
+            $canvas->drawImage($draw);
+        }
+        $this->textttf($canvas,$name,$width/2,$top+$margin_top,$style);
+        $this->textttf($canvas,'签到成功',$width/2,$top+2*$margin_top,$style);
+        $this->textttf($canvas,' 签到天数 '.$success.'    连续签到 '.$continus.' ',$width/2,$top+3*$margin_top,$style2);
+        $this->textttf($canvas,' GMP ' .($data['gmp'] + $gmp).'    今日第 '.$day_order.' 名 ',$width/2,$top+4*$margin_top,$style2);
+        header("Content-Type: image/".$format);
+        ob_end_clean();
+        echo $canvas->getImagesBlob();
+        return false;
+    }
+    public function textttf(&$imagick, $text, $x = 0, $y = 0, $style = [],$align='center')
     {
         $draw = new ImagickDraw ();
         if (isset ($style ['font']))
