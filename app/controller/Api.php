@@ -65,7 +65,7 @@ class Api extends BaseController
         echo $canvas->getImageBlob();
     }
     /**
-     * @Apidoc\Title("撕接口")
+     * @Apidoc\Title("撕接口(裂痕版)")
      * @Apidoc\Url("/api/slash")
      * @Apidoc\Method("GET")
      * @Apidoc\Param("qq", type="string",require=true, desc="QQ号" )
@@ -124,6 +124,31 @@ class Api extends BaseController
         echo $background->getImageBlob();
     }
     /**
+     * @Apidoc\Title("撕接口(血痕版)")
+     * @Apidoc\Url("/api/slash2")
+     * @Apidoc\Method("GET")
+     * @Apidoc\Param("qq", type="string",require=true, desc="QQ号" )
+     * @Apidoc\Returned("image", type="binary", desc="图像")
+     */
+    public function slash2()
+    {
+        $qq = input('qq',0);
+        $head1 = new Imagick("https://q1.qlogo.cn/g?b=qq&nk=$qq&s=640");
+        $head2 = new Imagick("https://q1.qlogo.cn/g?b=qq&nk=$qq&s=640");
+        $background=new Imagick(WEB_ROOT."slash/slash2.jpg");
+        $head1->resizeImage(180,180,Imagick::FILTER_LANCZOS, 1);
+        $head1->cropImage(90,180,0,0);
+        $head1->rotateImage(new ImagickPixel('none'),-25);
+        $head2->resizeImage(180,180,Imagick::FILTER_LANCZOS, 1);
+        $head2->cropImage(90,180,90,0);
+        $head2->rotateImage(new ImagickPixel('none'),10);
+        $background->compositeImage($head1,Imagick::COMPOSITE_OVER, -40, 200);
+        $background->compositeImage($head2,Imagick::COMPOSITE_OVER, 345, 160);
+        header("Content-Type: image/png");
+        ob_end_clean();
+        echo $background->getImageBlob();
+    }
+    /**
      * @Apidoc\Title("旋转丢接口")
      * @Apidoc\Url("/api/throw_pic")
      * @Apidoc\Method("GET")
@@ -176,7 +201,7 @@ class Api extends BaseController
             $bg->compositeImage($head,Imagick::COMPOSITE_OVER, $pos_x[$i], $pos_y[$i]);//放头
             $hand=new Imagick(WEB_ROOT.'hand/hand'.(string)($i+1).'.png');
             $bg->compositeImage($hand,Imagick::COMPOSITE_OVER, 0, 0);//放手
-            $animation->addImage($bg); //加入到刚才建立的那个gif imagick对象之中。
+            $animation->addImage($bg);
             $bg->destroy();
         }
         $animation->setImageDelay( $delay); //设置好播放速度。
@@ -213,8 +238,8 @@ class Api extends BaseController
             $head2->resizeImage(50,50,Imagick::FILTER_LANCZOS, 1);
             $head2->roundCorners($head1->getImageWidth() / 2, $head2->getImageHeight() / 2);
             $bg->compositeImage($head2,Imagick::COMPOSITE_OVER, $dsc_x[$i], $dsc_y[$i]);//放头2
-            $animation->addImage($bg); //加入到刚才建立的那个gif imagick对象之中。
-            $animation->setImageDelay( $delay); //设置好播放速度。
+            $animation->addImage($bg);
+            $animation->setImageDelay( $delay);
             $bg->destroy();
         }
         header("Content-Type: image/gif");
@@ -434,12 +459,10 @@ class Api extends BaseController
         $draw->settextencoding('UTF-8');
         if (strtolower($imagick->getImageFormat()) == 'gif') {
             foreach ($imagick as $frame) {
-                //$frame->drawImage($draw);
                 $imagick->annotateImage($draw, $x, $y, 0, $text);
             }
         } else {
             $imagick->annotateImage($draw, $x, $y, 0, $text);
-            //$imagick->drawImage($draw);
         }
     }
 }
