@@ -210,6 +210,48 @@ class Api extends BaseController
         echo $animation->getImagesBlob();
     }
     /**
+     * @Apidoc\Title("打拳接口")
+     * @Apidoc\Url("/api/fist")
+     * @Apidoc\Method("GET")
+     * @Apidoc\Param("qq", type="string",require=true, desc="QQ号" )
+     * @Apidoc\Returned("image", type="binary", desc="图像")
+     */
+    public function fist(){
+        $qq = input('qq',0);
+        $head=new Imagick("https://q1.qlogo.cn/g?b=qq&nk=$qq&s=640");
+        $animation = new Imagick(); //建立一个对象。
+        $animation->setFormat( "gif" ); //设置它的类型。
+        $delay = 1; //设置播放速度。
+        for($i=0; $i<16; $i++){
+            $bg=new Imagick();
+            $bg ->newImage(260, 260, 'white');
+            $bg->setImageFormat('png');
+            $head_pos = [[-30,20],[-16,9],[-6,-5],[3,-17],[14,-24],[27,-19],[38,-8],[45,2],[48,6],[30,-15],[12,-16],[-4,-23],[-18,-24],[-26,-11],[-30,3],[-31,15]];
+            $fist1_pos = [[-16,165],[-14,132],[-12,114],[-8,110],[-7,111],[-14,121],[-17,145],[-17,164],[-16,165],[-16,165],[-16,165],[-16,165],[-16,165],[-16,165],[-16,165],[-16,165]];
+            $fist2_pos = [[158,171],[158,171],[158,171],[158,171],[158,171],[158,171],[158,171],[158,171],[152,165],[109,130],[74,114],[58,111],[56,111],[95,121],[130,144],[153,164]];
+            $fist1_size=[80,120,150,170,170,140,100,85,80,80,80,80,80,80,80,80];
+            $fist2_size=[80,80,80,80,80,80,80,80,80,120,150,170,170,140,100,85];
+            $fist1_angle=[-45,-40,-30,-25,-20,-40,-45,-50,-45,-45,-45,-45,-45,-45,-45,-45];
+            $fist2_angle=[45,45,45,45,45,45,45,45,40,30,25,25,20,40,45,50];
+            $head->resizeImage(240,240,Imagick::FILTER_LANCZOS, 1);
+            $bg->compositeImage($head,Imagick::COMPOSITE_OVER, $head_pos[$i][0],$head_pos[$i][1]);//放头
+            $fist1=new Imagick(WEB_ROOT.'fist/fista.png');
+            $fist2=new Imagick(WEB_ROOT.'fist/fistb.png');
+            $fist1->resizeImage($fist1_size[$i],$fist1_size[$i],Imagick::FILTER_LANCZOS, 1);
+            $fist2->resizeImage($fist2_size[$i],$fist2_size[$i],Imagick::FILTER_LANCZOS, 1);
+            $fist1->rotateImage(new ImagickPixel('none'),$fist1_angle[$i]);
+            $fist2->rotateImage(new ImagickPixel('none'),$fist2_angle[$i]);
+            $bg->compositeImage($fist1,Imagick::COMPOSITE_OVER, $fist1_pos[$i][0], $fist1_pos[$i][1]);//放手
+            $bg->compositeImage($fist2,Imagick::COMPOSITE_OVER, $fist2_pos[$i][0], $fist2_pos[$i][1]);//放手
+            $animation->addImage($bg); //加入到刚才建立的那个gif imagick对象之中。
+            $animation->setImageDelay( $delay); //设置好播放速度。
+            $bg->destroy();
+        }
+        header("Content-Type: image/gif");
+        ob_end_clean();
+        echo $animation->getImagesBlob();
+    }
+    /**
      * @Apidoc\Title("亲接口")
      * @Apidoc\Url("/api/kiss")
      * @Apidoc\Method("GET")
