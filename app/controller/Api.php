@@ -468,6 +468,51 @@ class Api extends BaseController
         echo $canvas->getImagesBlob();
         return false;
     }
+    /**
+     * @Apidoc\Title("gif字幕合成接口")
+     * @Apidoc\Url("/api/ass2gif")
+     * @Apidoc\Method("GET")
+     * @Apidoc\Param("type", type="string",require=true, desc="类型" )
+     * @Apidoc\Param("data", type="array",require=true, desc="字幕数组" )
+     * @Apidoc\Returned("msg", type="string", desc="返回信息")
+     * @Apidoc\Returned("code", type="int", desc="状态码")
+     * @Apidoc\Returned("url", type="string", desc="返回url")
+     */
+    public function ass2gif()
+    {
+        $type = input('type');
+        $data = input('data');
+        $request_time = time();
+        $dir=WEB_ROOT . 'templates/cache/';
+        if(!is_dir($dir)){
+            mkdir($dir);
+        }
+        if ($type && $data) {
+            $TEMP_ROOT = WEB_ROOT. 'templates/' . $type . '/';
+            $TEMP_ASS = $TEMP_ROOT . 'template.ass';
+            $CACHE_ASS_PATH = WEB_ROOT. 'templates/cache/' . $type . '_' . $request_time . '.ass';
+            $TEMP_VIDEO = $TEMP_ROOT . 'template-small.mp4';
+            if (file_exists($TEMP_ROOT)) {
+                $ass_file = file_get_contents($TEMP_ASS);
+                for ($i = 0; $i < count($data); $i++) {
+                    $str_source[$i] = '<?=[' . $i . ']=?>';
+                }
+                $change_ass = str_replace($str_source, $data, $ass_file);
+                $create_temporary_ass = fopen($CACHE_ASS_PATH, "w");
+                fwrite($create_temporary_ass, $change_ass);
+                fclose($create_temporary_ass);
+                $out_put_file = $dir. $request_time . '.gif';
+                $command = 'ffmpeg -y -i ' . $TEMP_VIDEO . ' -vf "ass=' . $CACHE_ASS_PATH . '" ' . $out_put_file;
+                system($command);
+                unlink($CACHE_ASS_PATH);
+            } else {
+                return error('该模板文件不存在！');
+            }
+        } else {
+            return error('缺少必要参数，请检查！');
+        }
+        return success("生成成功",['url'=>request()->domain()."/templates/cache/$request_time.gif"]);
+    }
     public function textttf(&$imagick, $text, $x = 0, $y = 0, $style = [],$align='center')
     {
         $draw = new ImagickDraw ();
