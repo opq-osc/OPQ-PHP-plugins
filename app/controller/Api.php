@@ -430,8 +430,9 @@ class Api extends BaseController
                 return false;
             }
             $success = $data['success'] + 1;
-            $difference = date('z', time()) - date('z', strtotime($data['time']));
-            $continus = ($difference == 1 || $difference == -365) ? ($data['continus'] + 1) : 1;//考虑到跨年
+            $yesterday=date('z',mktime(0, 0, 0, date("m"),date("d")-1,date("Y")));
+            $continus=$yesterday== date('z', strtotime($data['time']))? ($data['continus'] + 1): 1;//考虑到跨年
+            //判断月连续
             $msuccess = date('F', time()) == date('F', strtotime($data['time'])) ? ($data['msuccess'] + 1) : 1;
             Db::name($this->table)->where('qq', $qq)->update(array(
                 'name' => $name,
