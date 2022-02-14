@@ -43,7 +43,7 @@ location / {
 
 ## 插件作者
 
-Github:xuxiaofen2   QQ:709500911(漆黑の翼)
+Github:xuxiaofen2  QQ:709500911(漆黑の翼)
 
 ## 项目框架
 
