@@ -311,6 +311,307 @@ class Api extends BaseController
         echo $canvas->getImagesBlob();
     }
     /**
+     * @Apidoc\Title("精神支柱接口")
+     * @Apidoc\Url("/api/support")
+     * @Apidoc\Method("GET")
+     * @Apidoc\Tag("imagick")
+     * @Apidoc\Param("qq", type="string",require=true, desc="QQ号和图像二选一" )
+     * @Apidoc\Param("image", type="string",require=false, desc="base图像数据" )
+     * @Apidoc\Returned("image", type="binary", desc="图像")
+     */
+    public function support(){
+        $qq = input('qq',0);
+        $image=input('post.image',null);
+        if($image!==null){
+            $head=new Imagick();
+            $head->readImageBlob(base64_decode($image));
+        }
+        else{
+            $head=new Imagick("https://q1.qlogo.cn/g?b=qq&nk=$qq&s=640");
+        }
+        $canvas=new Imagick();
+        $canvas->newImage(1293, 1164,'white');
+        $canvas->setImageFormat('png');
+        $head->resizeImage(815,815,Imagick::FILTER_LANCZOS, 1);
+        $head->rotateImage(new ImagickPixel('none'),-23);//旋转
+        $canvas->compositeImage($head,Imagick::COMPOSITE_OVER, -172, -17);//放头
+        $bg=new Imagick(WEB_ROOT.'support/0.png');
+        $canvas->compositeImage($bg,Imagick::COMPOSITE_OVER, 0,0);//放bg
+        header("Content-Type: image/png");
+        ob_end_clean();
+        echo $canvas->getImagesBlob();
+    }
+    /**
+     * @Apidoc\Title("继续干活接口")
+     * @Apidoc\Url("/api/back_to_work")
+     * @Apidoc\Method("GET")
+     * @Apidoc\Tag("imagick")
+     * @Apidoc\Param("qq", type="string",require=true, desc="QQ号和图像二选一" )
+     * @Apidoc\Param("image", type="string",require=false, desc="base图像数据" )
+     * @Apidoc\Returned("image", type="binary", desc="图像")
+     */
+    public function back_to_work(){
+        $qq = input('qq',0);
+        $image=input('post.image',null);
+        if($image!==null){
+            $head=new Imagick();
+            $head->readImageBlob(base64_decode($image));
+        }
+        else{
+            $head=new Imagick("https://q1.qlogo.cn/g?b=qq&nk=$qq&s=640");
+        }
+        $canvas=new Imagick();
+        $canvas->newImage(750, 750,'white');
+        $canvas->setImageFormat('png');
+        $head->resizeImage(250,250,Imagick::FILTER_LANCZOS, 1);
+        $head->rotateImage(new ImagickPixel('none'),-20);//旋转
+        $canvas->compositeImage($head,Imagick::COMPOSITE_OVER, 46,43);//放头
+        $bg=new Imagick(WEB_ROOT.'back_to_work/0.png');
+        $canvas->compositeImage($bg,Imagick::COMPOSITE_OVER, 0,0);//放bg
+        header("Content-Type: image/png");
+        ob_end_clean();
+        echo $canvas->getImagesBlob();
+    }
+    /**
+     * @Apidoc\Title("咬接口")
+     * @Apidoc\Url("/api/bite")
+     * @Apidoc\Method("GET")
+     * @Apidoc\Tag("imagick")
+     * @Apidoc\Param("qq", type="string",require=true, desc="QQ号和图像二选一" )
+     * @Apidoc\Param("image", type="string",require=false, desc="base图像数据" )
+     * @Apidoc\Returned("image", type="binary", desc="图像")
+     */
+    public function bite(){
+        $qq = input('qq',0);
+        $image=input('post.image',null);
+        if($image!==null){
+            $head=new Imagick();
+            $head->readImageBlob(base64_decode($image));
+        }
+        else{
+            $head=new Imagick("https://q1.qlogo.cn/g?b=qq&nk=$qq&s=100");
+        }
+        $animation = new Imagick(); //建立一个对象。
+        $animation->setFormat( "gif" ); //设置它的类型。
+        $locs = [
+            [90, 90, 105, 150],
+            [90, 83, 96, 172],
+            [90, 90, 106, 148],
+            [88, 88, 97, 167],
+            [90, 85, 89, 179],
+            [90, 90, 106, 151],
+        ];
+        $delay = 0; //设置播放速度。
+        for($i=0; $i<16; $i++){
+            $canvas=new Imagick();
+            $canvas->newImage(362, 364,'white');
+            $canvas->setImageFormat('png');
+            $bg=new Imagick(WEB_ROOT.'bite/'.(string)($i).'.png');
+            if($i<6){
+                $head->resizeImage($locs[$i][2],$locs[$i][3],Imagick::FILTER_LANCZOS, 1);
+                $canvas->compositeImage($head,Imagick::COMPOSITE_OVER, $locs[$i][0], $locs[$i][1]);//放头
+            }
+            $canvas->compositeImage($bg,Imagick::COMPOSITE_OVER,0,0);
+            $animation->addImage($canvas); //加入到刚才建立的那个gif imagick对象之中。
+            $animation->setImageDelay( $delay); //设置好播放速度。
+            $canvas->destroy();
+        }
+        header("Content-Type: image/gif");
+        ob_end_clean();
+        echo $animation->getImagesBlob();
+    }
+    /**
+     * @Apidoc\Title("玩球接口")
+     * @Apidoc\Url("/api/play")
+     * @Apidoc\Method("GET")
+     * @Apidoc\Tag("imagick")
+     * @Apidoc\Param("qq", type="string",require=true, desc="QQ号和图像二选一" )
+     * @Apidoc\Param("image", type="string",require=false, desc="base图像数据" )
+     * @Apidoc\Returned("image", type="binary", desc="图像")
+     */
+    public function play(){
+        $qq = input('qq',0);
+        $image=input('post.image',null);
+        if($image!==null){
+            $head=new Imagick();
+            $head->readImageBlob(base64_decode($image));
+        }
+        else{
+            $head=new Imagick("https://q1.qlogo.cn/g?b=qq&nk=$qq&s=100");
+        }
+        $animation = new Imagick(); //建立一个对象。
+        $animation->setFormat( "gif" ); //设置它的类型。
+        $delay = 6; //设置播放速度。
+        $locs = [
+            [180, 60, 100, 100],
+            [184, 75, 100, 100],
+            [183, 98, 100, 100],
+            [179, 118, 110, 100],
+            [156, 194, 150, 48],
+            [178, 136, 122, 69],
+            [175, 66, 122, 85],
+            [170, 42, 130, 96],
+            [175, 34, 118, 95],
+            [179, 35, 110, 93],
+            [180, 54, 102, 93],
+            [183, 58, 97, 92],
+            [174, 35, 120, 94],
+            [179, 35, 109, 93],
+            [181, 54, 101, 92],
+            [182, 59, 98, 92],
+            [183, 71, 90, 96],
+            [180, 131, 92, 101],
+        ];
+        for($i=0; $i<23; $i++){
+            $canvas = new Imagick();
+            $canvas ->newImage(480, 400, 'white');
+            $canvas->setImageFormat("png");
+            if($i<18){
+                $head->resizeImage($locs[$i][2], $locs[$i][3],Imagick::FILTER_LANCZOS, 1);
+                $head->roundCorners($head->getImageWidth() / 2, $head->getImageHeight() / 2);
+                $canvas->compositeImage($head,Imagick::COMPOSITE_OVER, $locs[$i][0], $locs[$i][1]);//放头
+            }
+            $bg=new Imagick(WEB_ROOT.'play/'.(string)($i).'.png');//放bg
+            $canvas->compositeImage($bg,Imagick::COMPOSITE_OVER, 0,0);//放头
+            $animation->addImage($canvas); //加入到刚才建立的那个gif imagick对象之中。
+            $bg->destroy();
+        }
+        $animation->setImageDelay( $delay); //设置好播放速度。
+        header("Content-Type: image/gif");
+        ob_end_clean();
+        echo $animation->getImagesBlob();
+    }
+    /**
+     * @Apidoc\Title("扔球接口")
+     * @Apidoc\Url("/api/thorw2")
+     * @Apidoc\Method("GET")
+     * @Apidoc\Tag("imagick")
+     * @Apidoc\Param("qq", type="string",require=true, desc="QQ号和图像二选一" )
+     * @Apidoc\Param("image", type="string",require=false, desc="base图像数据" )
+     * @Apidoc\Returned("image", type="binary", desc="图像")
+     */
+    public function throw2(){
+        $qq = input('qq',0);
+        $image=input('post.image',null);
+        if($image!==null){
+            $head=new Imagick();
+            $head->readImageBlob(base64_decode($image));
+        }
+        else{
+            $head=new Imagick("https://q1.qlogo.cn/g?b=qq&nk=$qq&s=100");
+        }
+        $animation = new Imagick(); //建立一个对象。
+        $animation->setFormat( "gif" ); //设置它的类型。
+        $delay = 6; //设置播放速度。
+        $locs = [
+            [[32, 32, 108, 36]],
+            [[32, 32, 122, 36]],
+            [],
+            [[123, 123, 19, 129]],
+            [[185, 185, -50, 200], [33, 33, 289, 70]],
+            [[32, 32, 280, 73]],
+            [[35, 35, 259, 31]],
+            [[175, 175, -50, 220]],
+        ];
+        foreach ($locs as $k=>$v){
+            $bg=new Imagick(WEB_ROOT.'throw_gif/'.(string)($k).'.png');
+            foreach ($v as $k2=>$v2){
+                $head->resizeImage($v2[0], $v2[1],Imagick::FILTER_LANCZOS, 1);
+                $head->roundCorners($head->getImageWidth() / 2, $head->getImageHeight() / 2);
+                $bg->compositeImage($head,Imagick::COMPOSITE_OVER, $v2[2], $v2[3]);//放头
+            }
+            $animation->addImage($bg); //加入到刚才建立的那个gif imagick对象之中。
+            $bg->destroy();
+        }
+        $animation->setImageDelay( $delay); //设置好播放速度。
+        header("Content-Type: image/gif");
+        ob_end_clean();
+        echo $animation->getImagesBlob();
+    }
+    /**
+     * @Apidoc\Title("膜拜接口")
+     * @Apidoc\Url("/api/worship")
+     * @Apidoc\Method("GET")
+     * @Apidoc\Tag("imagick")
+     * @Apidoc\Param("qq", type="string",require=true, desc="QQ号和图像二选一" )
+     * @Apidoc\Param("image", type="string",require=false, desc="base图像数据" )
+     * @Apidoc\Returned("image", type="binary", desc="图像")
+     */
+    public function worship(){
+        $qq = input('qq',0);
+        $image=input('post.image',null);
+        if($image!==null){
+            $head=new Imagick();
+            $head->readImageBlob(base64_decode($image));
+        }
+        else{
+            $head=new Imagick("https://q1.qlogo.cn/g?b=qq&nk=$qq&s=640");
+        }
+        $animation = new Imagick(); //建立一个对象。
+        $animation->setFormat( "gif" ); //设置它的类型。
+        $delay = 6; //设置播放速度。
+        $head->resizeImage(150, 150,Imagick::FILTER_LANCZOS, 1);
+        for($i=0; $i<10; $i++){
+            $canvas = new Imagick();
+            $canvas ->newImage(300, 169, 'black');
+            $canvas->setImageFormat("png");
+            $canvas->compositeImage($head,Imagick::COMPOSITE_OVER, 0,0);//放头
+            $bg=new Imagick(WEB_ROOT.'worship/'.(string)($i).'.png');
+            $canvas->compositeImage($bg,Imagick::COMPOSITE_OVER, 0,0);//放背景
+            $animation->addImage($canvas); //加入到刚才建立的那个gif imagick对象之中。
+            $canvas->destroy();
+        }
+        $animation->setImageDelay( $delay); //设置好播放速度。
+        header("Content-Type: image/gif");
+        ob_end_clean();
+        echo $animation->getImagesBlob();
+    }
+    /**
+     * @Apidoc\Title("玩游戏接口")
+     * @Apidoc\Url("/api/play_game")
+     * @Apidoc\Method("GET")
+     * @Apidoc\Tag("imagick")
+     * @Apidoc\Param("qq", type="string",require=true, desc="QQ号和图像二选一" )
+     * @Apidoc\Param("image", type="string",require=false, desc="base图像数据" )
+     * @Apidoc\Returned("image", type="binary", desc="图像")
+     */
+    public function play_game(){
+        $qq = input('qq',0);
+        $image=input('post.image',null);
+        if($image!==null){
+            $head=new Imagick();
+            $head->readImageBlob(base64_decode($image));
+        }
+        else{
+            $head=new Imagick("https://q1.qlogo.cn/g?b=qq&nk=$qq&s=640");
+        }
+        $img_w=$head->getImageWidth();
+        $img_h=$head->getImageHeight();
+        $ratio=min(220/$img_w,160/$img_h);
+        $img_w=(int)($img_w*$ratio);
+        $img_h=(int)($img_h*$ratio);
+        $head->resizeImage($img_w, $img_h,Imagick::FILTER_LANCZOS, 1);
+        //电脑屏幕
+        $screen= new Imagick();
+        $screen->newImage(220, 160, 'black');
+        //头像相对屏幕居中
+        $screen->compositeimage($head, Imagick::COMPOSITE_OVER , (int)((220 - $img_w) / 2), (int)((160 - $img_h) / 2));
+        $screen->rotateImage(new ImagickPixel('none'),-9.5);
+        $canvas = new Imagick();
+        $canvas ->newImage(526, 503, 'black');
+        $canvas->setImageFormat("png");
+        $canvas->compositeImage($screen,Imagick::COMPOSITE_OVER, 161, 117);//放头
+        $bg=new Imagick(WEB_ROOT.'play_game/0.png');
+        $canvas->compositeImage($bg,Imagick::COMPOSITE_OVER, 0,0);//放背景
+        $style['font_size'] = 35;
+        $style['fill_color'] ='#FFFFFF';
+        $style['font'] = WEB_ROOT . "font/msyhbd.ttf";
+        $this->textttf($canvas,'来玩休闲游戏啊',270,430,$style);//写字
+        header("Content-Type: image/png");
+        ob_end_clean();
+        echo $canvas->getImagesBlob();
+    }
+    /**
      * @Apidoc\Title("p站logo接口")
      * @Apidoc\Url("/api/phlogo")
      * @Apidoc\Method("GET")
