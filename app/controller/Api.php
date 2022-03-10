@@ -289,6 +289,28 @@ class Api extends BaseController
         echo $animation->getImagesBlob();
     }
     /**
+     * @Apidoc\Title("舔接口")
+     * @Apidoc\Url("/api/prpr")
+     * @Apidoc\Method("GET")
+     * @Apidoc\Tag("imagick")
+     * @Apidoc\Param("qq", type="string",require=true, desc="QQ号" )
+     * @Apidoc\Returned("image", type="binary", desc="图像")
+     */
+    public function prpr(){
+        $qq = input('qq',0);
+        $head=new Imagick("https://q1.qlogo.cn/g?b=qq&nk=$qq&s=640");
+        $canvas=new Imagick();
+        $canvas->newImage(690, 668,'white');
+        $canvas->setImageFormat('png');
+        $head->resizeImage(330,330,Imagick::FILTER_LANCZOS, 1);
+        $canvas->compositeImage($head,Imagick::COMPOSITE_OVER, 56,284);
+        $bg=new Imagick(WEB_ROOT.'prpr/0.png');
+        $canvas->compositeImage($bg,Imagick::COMPOSITE_OVER, 0,0);
+        header("Content-Type: image/png");
+        ob_end_clean();
+        echo $canvas->getImagesBlob();
+    }
+    /**
      * @Apidoc\Title("p站logo接口")
      * @Apidoc\Url("/api/phlogo")
      * @Apidoc\Method("GET")
