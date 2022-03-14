@@ -163,7 +163,7 @@ class Api extends BaseController
         $head->resizeImage(120,120,Imagick::FILTER_LANCZOS, 1);
         $animation = new Imagick();
         $animation->setFormat( "gif" );
-        $delay = 10;
+        $delay = 4;
         for($i=1; $i<8; $i++){
             $head->roundCorners($head->getImageWidth() / 2, $head->getImageHeight() / 2);
             $head->rotateImage(new ImagickPixel('none'),45*$i);
@@ -187,7 +187,7 @@ class Api extends BaseController
         $head=new Imagick("https://q1.qlogo.cn/g?b=qq&nk=$qq&s=100");
         $animation = new Imagick(); //建立一个对象。
         $animation->setFormat( "gif" ); //设置它的类型。
-        $delay = 6; //设置播放速度。
+        $delay = 4; //设置播放速度。
         for($i=0; $i<5; $i++){
             $bg=new Imagick();
             $bg ->newImage(112, 112, 'white');
@@ -198,13 +198,13 @@ class Api extends BaseController
             $size_y = [94,82,76,82,94];
             $head->resizeImage($size_x[$i],$size_y[$i],Imagick::FILTER_LANCZOS, 1);
             $head->roundCorners($head->getImageWidth() / 2, $head->getImageHeight() / 2);
-            $bg->compositeImage($head,Imagick::COMPOSITE_OVER, $pos_x[$i], $pos_y[$i]);//放头
+            $bg->compositeImage($head,Imagick::COMPOSITE_OVER, $pos_x[$i], $pos_y[$i]);
             $hand=new Imagick(WEB_ROOT.'hand/hand'.(string)($i+1).'.png');
-            $bg->compositeImage($hand,Imagick::COMPOSITE_OVER, 0, 0);//放手
+            $bg->compositeImage($hand,Imagick::COMPOSITE_OVER, 0, 0);
             $animation->addImage($bg);
             $bg->destroy();
         }
-        $animation->setImageDelay( $delay); //设置好播放速度。
+        $animation->setImageDelay( $delay);
         header("Content-Type: image/gif");
         ob_end_clean();
         echo $animation->getImagesBlob();
@@ -219,8 +219,8 @@ class Api extends BaseController
     public function fist(){
         $qq = input('qq',0);
         $head=new Imagick("https://q1.qlogo.cn/g?b=qq&nk=$qq&s=640");
-        $animation = new Imagick(); //建立一个对象。
-        $animation->setFormat( "gif" ); //设置它的类型。
+        $animation = new Imagick();
+        $animation->setFormat( "gif" );
         $delay = 1; //设置播放速度。
         for($i=0; $i<16; $i++){
             $bg=new Imagick();
@@ -243,8 +243,8 @@ class Api extends BaseController
             $fist2->rotateImage(new ImagickPixel('none'),$fist2_angle[$i]);
             $bg->compositeImage($fist1,Imagick::COMPOSITE_OVER, $fist1_pos[$i][0], $fist1_pos[$i][1]);//放手
             $bg->compositeImage($fist2,Imagick::COMPOSITE_OVER, $fist2_pos[$i][0], $fist2_pos[$i][1]);//放手
-            $animation->addImage($bg); //加入到刚才建立的那个gif imagick对象之中。
-            $animation->setImageDelay( $delay); //设置好播放速度。
+            $animation->addImage($bg);
+            $animation->setImageDelay( $delay);
             $bg->destroy();
         }
         header("Content-Type: image/gif");
@@ -264,14 +264,13 @@ class Api extends BaseController
         $qq2 = input('qq2',0);
         $head1=new Imagick("https://q1.qlogo.cn/g?b=qq&nk=$qq1&s=100");
         $head2=new Imagick("https://q1.qlogo.cn/g?b=qq&nk=$qq2&s=100");
-        $animation = new Imagick(); //建立一个对象。
-        $animation->setFormat( "gif" ); //设置它的类型。
-        //坐标和图像资源参考自xiyaowong
+        $animation = new Imagick();
+        $animation->setFormat( "gif" );
         $src_x = [92, 135, 84, 80, 155, 60, 50, 98, 35, 38, 70, 84, 75];
         $src_y = [64, 40, 105, 110, 82, 96, 80, 55, 65, 100, 80, 65, 65];
         $dsc_x = [58, 62, 42, 50, 56, 18, 28, 54, 46, 60, 35, 20, 40];
         $dsc_y = [90, 95, 100, 100, 100, 120, 110, 100, 100, 100, 115, 120, 96];
-        $delay = 0; //设置播放速度。
+        $delay = 4;
         for($i=0; $i<13; $i++){
             $bg=new Imagick(WEB_ROOT.'kiss/'.(string)($i+1).'.png');
             $head1->resizeImage(40,40,Imagick::FILTER_LANCZOS, 1);
@@ -333,10 +332,10 @@ class Api extends BaseController
         $canvas->newImage(1293, 1164,'white');
         $canvas->setImageFormat('png');
         $head->resizeImage(815,815,Imagick::FILTER_LANCZOS, 1);
-        $head->rotateImage(new ImagickPixel('none'),-23);//旋转
-        $canvas->compositeImage($head,Imagick::COMPOSITE_OVER, -172, -17);//放头
+        $head->rotateImage(new ImagickPixel('none'),-23);
+        $canvas->compositeImage($head,Imagick::COMPOSITE_OVER, -172, -17);
         $bg=new Imagick(WEB_ROOT.'support/0.png');
-        $canvas->compositeImage($bg,Imagick::COMPOSITE_OVER, 0,0);//放bg
+        $canvas->compositeImage($bg,Imagick::COMPOSITE_OVER, 0,0);
         header("Content-Type: image/png");
         ob_end_clean();
         echo $canvas->getImagesBlob();
@@ -364,10 +363,10 @@ class Api extends BaseController
         $canvas->newImage(750, 750,'white');
         $canvas->setImageFormat('png');
         $head->resizeImage(250,250,Imagick::FILTER_LANCZOS, 1);
-        $head->rotateImage(new ImagickPixel('none'),-20);//旋转
-        $canvas->compositeImage($head,Imagick::COMPOSITE_OVER, 46,43);//放头
+        $head->rotateImage(new ImagickPixel('none'),-20);
+        $canvas->compositeImage($head,Imagick::COMPOSITE_OVER, 46,43);
         $bg=new Imagick(WEB_ROOT.'back_to_work/0.png');
-        $canvas->compositeImage($bg,Imagick::COMPOSITE_OVER, 0,0);//放bg
+        $canvas->compositeImage($bg,Imagick::COMPOSITE_OVER, 0,0);
         header("Content-Type: image/png");
         ob_end_clean();
         echo $canvas->getImagesBlob();
@@ -391,8 +390,8 @@ class Api extends BaseController
         else{
             $head=new Imagick("https://q1.qlogo.cn/g?b=qq&nk=$qq&s=100");
         }
-        $animation = new Imagick(); //建立一个对象。
-        $animation->setFormat( "gif" ); //设置它的类型。
+        $animation = new Imagick();
+        $animation->setFormat( "gif" );
         $locs = [
             [90, 90, 105, 150],
             [90, 83, 96, 172],
@@ -401,7 +400,7 @@ class Api extends BaseController
             [90, 85, 89, 179],
             [90, 90, 106, 151],
         ];
-        $delay = 0; //设置播放速度。
+        $delay = 4; //设置播放速度。
         for($i=0; $i<16; $i++){
             $canvas=new Imagick();
             $canvas->newImage(362, 364,'white');
@@ -412,8 +411,8 @@ class Api extends BaseController
                 $canvas->compositeImage($head,Imagick::COMPOSITE_OVER, $locs[$i][0], $locs[$i][1]);//放头
             }
             $canvas->compositeImage($bg,Imagick::COMPOSITE_OVER,0,0);
-            $animation->addImage($canvas); //加入到刚才建立的那个gif imagick对象之中。
-            $animation->setImageDelay( $delay); //设置好播放速度。
+            $animation->addImage($canvas);
+            $animation->setImageDelay( $delay);
             $canvas->destroy();
         }
         header("Content-Type: image/gif");
@@ -439,9 +438,9 @@ class Api extends BaseController
         else{
             $head=new Imagick("https://q1.qlogo.cn/g?b=qq&nk=$qq&s=100");
         }
-        $animation = new Imagick(); //建立一个对象。
-        $animation->setFormat( "gif" ); //设置它的类型。
-        $delay = 6; //设置播放速度。
+        $animation = new Imagick();
+        $animation->setFormat( "gif" );
+        $delay = 4; //设置播放速度。
         $locs = [
             [180, 60, 100, 100],
             [184, 75, 100, 100],
@@ -473,10 +472,10 @@ class Api extends BaseController
             }
             $bg=new Imagick(WEB_ROOT.'play/'.(string)($i).'.png');//放bg
             $canvas->compositeImage($bg,Imagick::COMPOSITE_OVER, 0,0);//放头
-            $animation->addImage($canvas); //加入到刚才建立的那个gif imagick对象之中。
+            $animation->addImage($canvas);
             $bg->destroy();
         }
-        $animation->setImageDelay( $delay); //设置好播放速度。
+        $animation->setImageDelay( $delay);
         header("Content-Type: image/gif");
         ob_end_clean();
         echo $animation->getImagesBlob();
@@ -500,9 +499,9 @@ class Api extends BaseController
         else{
             $head=new Imagick("https://q1.qlogo.cn/g?b=qq&nk=$qq&s=100");
         }
-        $animation = new Imagick(); //建立一个对象。
-        $animation->setFormat( "gif" ); //设置它的类型。
-        $delay = 6; //设置播放速度。
+        $animation = new Imagick();
+        $animation->setFormat( "gif" );
+        $delay = 4;
         $locs = [
             [[32, 32, 108, 36]],
             [[32, 32, 122, 36]],
@@ -518,12 +517,12 @@ class Api extends BaseController
             foreach ($v as $k2=>$v2){
                 $head->resizeImage($v2[0], $v2[1],Imagick::FILTER_LANCZOS, 1);
                 $head->roundCorners($head->getImageWidth() / 2, $head->getImageHeight() / 2);
-                $bg->compositeImage($head,Imagick::COMPOSITE_OVER, $v2[2], $v2[3]);//放头
+                $bg->compositeImage($head,Imagick::COMPOSITE_OVER, $v2[2], $v2[3]);
             }
-            $animation->addImage($bg); //加入到刚才建立的那个gif imagick对象之中。
+            $animation->addImage($bg);
             $bg->destroy();
         }
-        $animation->setImageDelay( $delay); //设置好播放速度。
+        $animation->setImageDelay( $delay);
         header("Content-Type: image/gif");
         ob_end_clean();
         echo $animation->getImagesBlob();
@@ -547,21 +546,21 @@ class Api extends BaseController
         else{
             $head=new Imagick("https://q1.qlogo.cn/g?b=qq&nk=$qq&s=640");
         }
-        $animation = new Imagick(); //建立一个对象。
-        $animation->setFormat( "gif" ); //设置它的类型。
-        $delay = 6; //设置播放速度。
+        $animation = new Imagick();
+        $animation->setFormat( "gif" );
+        $delay = 4;
         $head->resizeImage(150, 150,Imagick::FILTER_LANCZOS, 1);
         for($i=0; $i<10; $i++){
             $canvas = new Imagick();
             $canvas ->newImage(300, 169, 'black');
             $canvas->setImageFormat("png");
-            $canvas->compositeImage($head,Imagick::COMPOSITE_OVER, 0,0);//放头
+            $canvas->compositeImage($head,Imagick::COMPOSITE_OVER, 0,0);
             $bg=new Imagick(WEB_ROOT.'worship/'.(string)($i).'.png');
-            $canvas->compositeImage($bg,Imagick::COMPOSITE_OVER, 0,0);//放背景
-            $animation->addImage($canvas); //加入到刚才建立的那个gif imagick对象之中。
+            $canvas->compositeImage($bg,Imagick::COMPOSITE_OVER, 0,0);
+            $animation->addImage($canvas);
             $canvas->destroy();
         }
-        $animation->setImageDelay( $delay); //设置好播放速度。
+        $animation->setImageDelay( $delay);
         header("Content-Type: image/gif");
         ob_end_clean();
         echo $animation->getImagesBlob();
@@ -600,13 +599,13 @@ class Api extends BaseController
         $canvas = new Imagick();
         $canvas ->newImage(526, 503, 'black');
         $canvas->setImageFormat("png");
-        $canvas->compositeImage($screen,Imagick::COMPOSITE_OVER, 161, 117);//放头
+        $canvas->compositeImage($screen,Imagick::COMPOSITE_OVER, 161, 117);
         $bg=new Imagick(WEB_ROOT.'play_game/0.png');
-        $canvas->compositeImage($bg,Imagick::COMPOSITE_OVER, 0,0);//放背景
+        $canvas->compositeImage($bg,Imagick::COMPOSITE_OVER, 0,0);
         $style['font_size'] = 35;
         $style['fill_color'] ='#FFFFFF';
         $style['font'] = WEB_ROOT . "font/msyhbd.ttf";
-        $this->textttf($canvas,'来玩休闲游戏啊',270,430,$style);//写字
+        $this->textttf($canvas,'来玩休闲游戏啊',270,430,$style);
         header("Content-Type: image/png");
         ob_end_clean();
         echo $canvas->getImagesBlob();
@@ -636,7 +635,7 @@ class Api extends BaseController
         $background = new Imagick();
         $background ->newImage($width1 +$width2 + 150, 210, 'black');
         $background->setImageFormat("png");
-        $text2_left=$arr1[2]+60;//第二种字体的起始位置
+        $text2_left=$arr1[2]+60;
         $draw = new ImagickDraw();
         $draw->setFillColor('#f7971d');
         $draw->roundRectangle($text2_left, 40, $text2_left+$width2+50, 170, 10, 10);
@@ -646,6 +645,60 @@ class Api extends BaseController
         header("Content-Type: image/png");
         ob_end_clean();
         echo $background->getImageBlob();
+    }
+    /**
+     * @Apidoc\Title("我有个朋友接口")
+     * @Apidoc\Url("/api/my_friend")
+     * @Apidoc\Method("GET")
+     * @Apidoc\Tag("imagick")
+     * @Apidoc\Param("qq", type="string",require=true, desc="QQ号和图像二选一" )
+     * @Apidoc\Param("text", type="string",require=true, desc="内容" )
+     * @Apidoc\Param("name", type="string",require=true, desc="昵称" )
+     * @Apidoc\Param("image", type="string",require=false, desc="base图像数据" )
+     * @Apidoc\Returned("image", type="binary", desc="图像")
+     */
+    public function my_friend()
+    {
+        $qq = input('qq',0);
+        $text=input('text','');
+        $name=input('name','朋友');
+        $image=input('post.image',null);
+        $style1['font']=WEB_ROOT.'font/msyh.ttf';
+        $style1['font_size'] = 25;
+        $style1['fill_color']='#868894';
+        $style2['font']=WEB_ROOT.'font/msyh.ttf';
+        $style2['font_size'] = 40;
+        $style2['fill_color']='#000000';
+        $arr1=imagettfbbox($style1['font_size'], 0, $style1['font'], $name);
+        $arr2=imagettfbbox(30, 0, $style2['font'], $text);
+        $width1=$arr1[2]-$arr1[0];
+        $width2=$arr2[2]-$arr2[0];
+        $canvas = new Imagick();
+        $canvas ->newImage(max($width1+15,$width2)+240, 210, 'rgb(234,237,246)');
+        $canvas->setImageFormat("png");
+        if($image!==null){
+            $head=new Imagick();
+            $head->readImageBlob(base64_decode($image));
+            $head->resizeImage(100,100,Imagick::FILTER_LANCZOS, 1);
+        }
+        else{
+            $head=new Imagick("https://q1.qlogo.cn/g?b=qq&nk=$qq&s=100");
+        }
+        $rank=new Imagick(WEB_ROOT.'my_friend/2.png');
+        $tail=new Imagick(WEB_ROOT.'my_friend/0.png');
+        $head->roundCorners($head->getImageWidth() / 2, $head->getImageHeight() / 2);
+        $canvas->compositeImage($head,Imagick::COMPOSITE_OVER, 20, 20);
+        $canvas->compositeImage($rank,Imagick::COMPOSITE_OVER, 160, 25);
+        $draw = new ImagickDraw();
+        $draw->setFillColor('white');
+        $draw->roundRectangle(160, 80, 160+$width2+50, 80+110, 40, 40);
+        $canvas->drawImage($draw);
+        $canvas->compositeImage($tail,Imagick::COMPOSITE_OVER, 125, 60);
+        $this->textttf($canvas,$name,260,50,$style1,'left');
+        $this->textttf($canvas,$text,180,150,$style2,'left');
+        header("Content-Type: image/png");
+        ob_end_clean();
+        echo $canvas->getImageBlob();
     }
     /**
      * @Apidoc\Title("运势接口")
@@ -755,7 +808,6 @@ class Api extends BaseController
             $success = $data['success'] + 1;
             $yesterday=date('z',mktime(0, 0, 0, date("m"),date("d")-1,date("Y")));
             $continus=$yesterday== date('z', strtotime($data['time']))? ($data['continus'] + 1): 1;//考虑到跨年
-            //判断月连续
             $msuccess = date('F', time()) == date('F', strtotime($data['time'])) ? ($data['msuccess'] + 1) : 1;
             Db::name($this->table)->where('qq', $qq)->update(array(
                 'name' => $name,
